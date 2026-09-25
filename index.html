@@ -2,162 +2,305 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Dashboard Biostimulasi</title>
 <style>
-:root{--bg:#f4f7fb;--card:#fff;--text:#172033;--muted:#687386;--line:#e5eaf1;--blue:#2563eb;--green:#059669;--orange:#d97706;--red:#dc2626;--shadow:0 8px 24px rgba(15,23,42,.07)}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Segoe UI,Arial,sans-serif;color:var(--text)}
-.wrap{max-width:1500px;margin:auto;padding:24px}.top{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;margin-bottom:20px}
-h1{margin:0;font-size:28px}.sub{margin-top:6px;color:var(--muted);font-size:14px}.actions{display:flex;gap:8px;align-items:center}
-button{border:0;border-radius:10px;padding:10px 14px;background:var(--blue);color:#fff;font-weight:700;cursor:pointer}.status{padding:9px 11px;background:#fff;border:1px solid var(--line);border-radius:10px;color:var(--muted);font-size:12px}
-.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:var(--shadow)}
-.label{color:var(--muted);font-size:13px}.big{font-size:31px;font-weight:800;margin-top:7px}.small{font-size:12px;color:var(--muted);margin-top:5px}
-.materials{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin:14px 0}.mat{background:#fff;border:1px solid var(--line);border-radius:15px;padding:16px;box-shadow:var(--shadow)}
-.mat h3{font-size:14px;margin:0 0 10px}.weight{font-size:23px;font-weight:800}.pct{font-size:12px;color:var(--blue);margin-top:4px}.bar{height:8px;background:#edf1f6;border-radius:99px;overflow:hidden;margin-top:10px}.bar i{display:block;height:100%;background:var(--blue);width:0}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}.panel{margin-top:14px}.panel h2{font-size:17px;margin:0 0 14px}.loc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.loc{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fafbfd}.loc b{font-size:13px}.loc .n{font-size:21px;font-weight:800;margin-top:5px}
-.tablewrap{overflow:auto;max-height:520px;border:1px solid var(--line);border-radius:12px}table{border-collapse:collapse;width:100%;font-size:13px;background:#fff}th,td{padding:9px 11px;border-bottom:1px solid var(--line);white-space:nowrap;text-align:left}th{position:sticky;top:0;background:#f8fafc;z-index:1}
-.note{margin-top:14px;padding:12px 14px;border-radius:12px;background:#eff6ff;border:1px solid #bfdbfe;color:#1e3a8a;font-size:13px}
-.error{color:#b91c1c}.ok{color:#047857}
-@media(max-width:1100px){.cards{grid-template-columns:repeat(2,1fr)}.materials{grid-template-columns:repeat(2,1fr)}.loc-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:650px){.wrap{padding:14px}.top{display:block}.actions{margin-top:12px}.cards,.materials,.grid2,.loc-grid{grid-template-columns:1fr}}
+  :root{
+    --bg:#f5f7fb; --card:#fff; --text:#172033; --muted:#667085;
+    --line:#e6eaf0; --accent:#2563eb; --green:#16a34a;
+    --orange:#ea580c; --purple:#7c3aed; --red:#dc2626;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+  .wrap{max-width:1500px;margin:auto;padding:24px}
+  h1{margin:0 0 6px;font-size:30px}
+  .sub{color:var(--muted);margin-bottom:20px}
+  .status{padding:10px 14px;border-radius:10px;background:#eef4ff;color:#1d4ed8;margin-bottom:18px;font-size:14px}
+  .status.ok{background:#ecfdf3;color:#15803d}
+  .status.err{background:#fef2f2;color:#b91c1c}
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin-bottom:20px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 3px 12px rgba(0,0,0,.04)}
+  .label{font-size:13px;color:var(--muted);margin-bottom:7px}
+  .value{font-size:27px;font-weight:700}
+  .unit{font-size:13px;color:var(--muted);margin-left:4px;font-weight:400}
+  .section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;margin-bottom:20px}
+  .section h2{font-size:18px;margin:0 0 14px}
+  .quality{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .q{padding:16px;border-radius:14px;background:#f8fafc;border:1px solid var(--line)}
+  .q strong{font-size:24px}
+  .bar{height:9px;background:#e5e7eb;border-radius:10px;overflow:hidden;margin-top:10px}
+  .bar span{display:block;height:100%;background:var(--accent)}
+  .material-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+  .mat{border:1px solid var(--line);border-radius:14px;padding:16px}
+  .mat .name{font-weight:700}
+  .mat .num{font-size:22px;font-weight:700;margin-top:7px}
+  .mat .pct{color:var(--muted);font-size:13px;margin-top:4px}
+  .note{font-size:12px;color:var(--muted);margin-top:12px}
+  .table-wrap{overflow:auto;max-height:600px;border:1px solid var(--line);border-radius:12px}
+  table{border-collapse:collapse;width:100%;min-width:1050px;background:#fff}
+  th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;font-size:13px;white-space:nowrap}
+  th{position:sticky;top:0;background:#f8fafc;z-index:1}
+  td.num{text-align:right}
+  .filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+  select,input{padding:9px 11px;border:1px solid #d0d5dd;border-radius:9px;background:#fff}
+  .loc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+  .loc{border:1px solid var(--line);border-radius:12px;padding:13px}
+  .loc .title{font-weight:700;margin-bottom:7px}
+  .loc div{font-size:12px;color:var(--muted);margin:3px 0}
+  .small{font-size:12px;color:var(--muted)}
+  .danger{color:var(--red)}
+  @media(max-width:700px){.wrap{padding:14px}.quality{grid-template-columns:1fr}h1{font-size:24px}}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="top">
-    <div>
-      <h1>Dashboard Monitoring Biostimulasi</h1>
-      <div class="sub">Rekap seluruh grid dan penggunaan material dari Google Sheets</div>
-    </div>
-    <div class="actions"><span class="status" id="status">Memuat data…</span><button onclick="loadDashboard()">↻ Refresh</button></div>
-  </div>
+  <h1>Dashboard Biostimulasi</h1>
+  <div class="sub">Sumber data: Google Sheets — update otomatis tanpa upload Excel ulang.</div>
+
+  <div id="status" class="status">Mengambil data dari Google Sheets...</div>
 
   <div class="cards">
-    <div class="card"><div class="label">TOTAL GRID</div><div class="big" id="totalGrid">0</div><div class="small">Grid yang memiliki ID/Grid</div></div>
-    <div class="card"><div class="label">GRID TKA</div><div class="big" id="tka">0</div><div class="small" id="tkaPct">0%</div></div>
-    <div class="card"><div class="label">GRID TKB</div><div class="big" id="tkb">0</div><div class="small" id="tkbPct">0%</div></div>
-    <div class="card"><div class="label">GRID TKC</div><div class="big" id="tkc">0</div><div class="small" id="tkcPct">0%</div></div>
+    <div class="card"><div class="label">Total Grid</div><div class="value" id="totalGrid">0</div></div>
+    <div class="card"><div class="label">UREA</div><div class="value" id="urea">0 <span class="unit">kg</span></div></div>
+    <div class="card"><div class="label">TSP</div><div class="value" id="tsp">0 <span class="unit">kg</span></div></div>
+    <div class="card"><div class="label">DOLOMIT</div><div class="value" id="dolomit">0 <span class="unit">kg</span></div></div>
+    <div class="card"><div class="label">KOHE</div><div class="value" id="kohe">0 <span class="unit">kg</span></div></div>
+    <div class="card"><div class="label">TANKOS</div><div class="value" id="tankos">0 <span class="unit">m³</span></div></div>
   </div>
 
-  <div class="materials" id="materials"></div>
-
-  <div class="grid2">
-    <div class="card"><h2>Komposisi Penggunaan Material</h2><div id="materialBars"></div></div>
-    <div class="card"><h2>Rekap per Lokasi</h2><div class="loc-grid" id="locations"></div></div>
+  <div class="section">
+    <h2>Komposisi In Qlty</h2>
+    <div class="quality">
+      <div class="q"><div>TKA</div><strong id="tka">0</strong><span class="small"> grid</span><div class="bar"><span id="barTka" style="width:0%"></span></div><div class="small" id="pctTka">0%</div></div>
+      <div class="q"><div>TKB</div><strong id="tkb">0</strong><span class="small"> grid</span><div class="bar"><span id="barTkb" style="width:0%"></span></div><div class="small" id="pctTkb">0%</div></div>
+      <div class="q"><div>TKC</div><strong id="tkc">0</strong><span class="small"> grid</span><div class="bar"><span id="barTkc" style="width:0%"></span></div><div class="small" id="pctTkc">0%</div></div>
+    </div>
   </div>
 
-  <div class="card panel">
+  <div class="section">
+    <h2>Persentase Material (basis kg)</h2>
+    <div class="material-grid">
+      <div class="mat"><div class="name">UREA</div><div class="num" id="mUrea">0 kg</div><div class="pct" id="pUrea">0%</div></div>
+      <div class="mat"><div class="name">TSP</div><div class="num" id="mTsp">0 kg</div><div class="pct" id="pTsp">0%</div></div>
+      <div class="mat"><div class="name">DOLOMIT</div><div class="num" id="mDolomit">0 kg</div><div class="pct" id="pDolomit">0%</div></div>
+      <div class="mat"><div class="name">KOHE</div><div class="num" id="mKohe">0 kg</div><div class="pct" id="pKohe">0%</div></div>
+      <div class="mat"><div class="name">TANKOS</div><div class="num" id="mTankos">0 m³</div><div class="pct">Satuan volume — tidak dicampur dengan persentase material kg.</div></div>
+    </div>
+    <div class="note">Persentase UREA/TSP/DOLOMIT/KOHE dihitung terhadap total 4 material yang satuannya kg. TANKOS memakai kolom <b>tankos, m3</b> secara khusus.</div>
+  </div>
+
+  <div class="section">
+    <h2>Rekap per Lokasi</h2>
+    <div id="locations" class="loc-grid"></div>
+  </div>
+
+  <div class="section">
     <h2>Detail Data Grid</h2>
-    <div class="tablewrap"><table id="detail"><thead></thead><tbody></tbody></table></div>
+    <div class="filters">
+      <select id="locFilter"><option value="">Semua Lokasi</option></select>
+      <select id="qualityFilter"><option value="">Semua In Qlty</option><option>TKA</option><option>TKB</option><option>TKC</option></select>
+      <input id="gridSearch" placeholder="Cari grid...">
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Lokasi</th><th>Grid</th><th>In Qlty</th><th>In-SPL</th>
+            <th>UREA (kg)</th><th>TSP (kg)</th><th>DOLOMIT (kg)</th><th>KOHE (kg)</th><th>TANKOS (m³)</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
   </div>
 
-  <div class="note">
-    <b>Perbaikan versi ini:</b> kategori TKA/TKB/TKC dibaca langsung dari kolom <b>In Qlty</b> pada master, bukan dihitung ulang dari In-SPL.
-    Kolom material dicari berdasarkan nama header pada masing-masing sheet, sehingga pergeseran posisi kolom tidak membuat nilainya menjadi 0.
-    <br><br>
-    <b>Bulking Agent:</b> pada master saat ini tidak ada header "Bulking Agent". Dashboard menggunakan kolom <b>Volume Bakteri/Volume bakteri</b> sebagai nilai Bulking Agent karena itu adalah kolom material tambahan yang tersedia pada sheet yang memiliki kolom tersebut.
-  </div>
+  <div class="small">Refresh otomatis setiap 60 detik. Terakhir diperbarui: <span id="updated">-</span></div>
 </div>
 
 <script>
-const SHEET_ID="1kbQ4nngzUJK5uLBe7G9mtR1-QKntWAmPMkHF6A2ASpQ";
-const LOCATION_SHEETS=["4D-26","5B-75","6D-17","4C-69","4D-52","4E-21","5B-41","5B-88"];
-const REFRESH_MS=60000;
+const SHEET_ID = "1kbQ4nngzUJK5uLBe7G9mtR1-QKntWAmPMkHF6A2ASpQ";
+const SHEETS = ["4D-26","5B-75","6D-17","4C-69","4D-52","4E-21","5B-41","5B-88"];
+const REFRESH_MS = 60000;
+let allRows = [];
 
-const MATERIALS=[
- {key:"urea",label:"UREA",aliases:["urea, kg","urea"]},
- {key:"tsp",label:"TSP",aliases:["tsp, kg","tsp"]},
- {key:"dolomit",label:"DOLOMIT",aliases:["dolomit, kg","dolomit","dolomite"]},
- {key:"kohe",label:"KOHE",aliases:["kohe, kg","kohe"]},
- {key:"bulking",label:"BULKING AGENT",aliases:["bulking agent","bulking_agent","volume bakteri","volume bakteri, l","volume bakteri "]}
-];
-
-function nrm(x){return String(x??"").toLowerCase().replace(/\n/g," ").replace(/\s+/g," ").trim()}
-function esc(x){return String(x??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-function number(x){
- if(x===null||x===undefined||x==="")return 0;
- let s=String(x).trim().replace(/\s/g,"").replace(/rp/ig,"");
- if(/\.\d{3},\d+$/.test(s))s=s.replace(/\./g,"").replace(",",".");
- else if(/,\d+$/.test(s))s=s.replace(",",".");
- else if(/^\d{1,3}(\.\d{3})+$/.test(s))s=s.replace(/\./g,"");
- const v=parseFloat(s.replace(/[^\d.-]/g,""));return Number.isFinite(v)?v:0;
+function norm(v){
+  return String(v ?? "")
+    .replace(/\\n/g," ")
+    .replace(/\\s+/g," ")
+    .replace(/[–—]/g,"-")
+    .trim().toLowerCase();
 }
-function fmt(x){return new Intl.NumberFormat("id-ID",{maximumFractionDigits:2}).format(x)}
-function percent(x,total){return total?x/total*100:0}
-function findHeaderRow(rows){
- for(let i=0;i<Math.min(rows.length,20);i++){
-   const line=rows[i].map(nrm);
-   if(line.includes("in qlty") && (line.some(x=>x==="grid")||line.some(x=>x==="id grid")))return i;
- }
- return -1;
+function num(v){
+  if(v === null || v === undefined || v === "") return 0;
+  let s = String(v).trim();
+  s = s.replace(/\\s/g,"");
+  // Google CSV normally returns decimal points. Also support Indonesian-style decimals.
+  if(s.includes(",") && s.includes(".")){
+    if(s.lastIndexOf(",") > s.lastIndexOf(".")) s=s.replace(/\\./g,"").replace(",",".");
+    else s=s.replace(/,/g,"");
+  } else if(s.includes(",")){
+    const parts=s.split(",");
+    if(parts.length===2 && parts[1].length<=3) s=s.replace(",",".");
+    else s=s.replace(/,/g,"");
+  }
+  s=s.replace(/[^0-9.\\-]/g,"");
+  const n=parseFloat(s);
+  return Number.isFinite(n)?n:0;
 }
-function findCol(headers,aliases){
- const h=headers.map(nrm);
- for(const a of aliases){const i=h.indexOf(nrm(a));if(i>=0)return i}
- for(const a of aliases){const x=nrm(a),i=h.findIndex(v=>v.includes(x));if(i>=0)return i}
- return -1;
+function fmt(n, d=2){
+  return Number(n||0).toLocaleString("id-ID",{minimumFractionDigits:d,maximumFractionDigits:d});
+}
+function findHeader(rows){
+  for(let i=0;i<Math.min(rows.length,30);i++){
+    const r=rows[i].map(norm);
+    if(r.some(x=>x==="in qlty" || x==="in qlty,")) return i;
+  }
+  return -1;
+}
+function findCol(headers, aliases){
+  const h=headers.map(norm);
+  for(const a of aliases){
+    const x=norm(a);
+    const idx=h.findIndex(v=>v===x);
+    if(idx>=0) return idx;
+  }
+  return -1;
+}
+async function fetchSheet(sheet){
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(sheet)}`;
+  const res = await fetch(url, {cache:"no-store"});
+  if(!res.ok) throw new Error(`${sheet}: HTTP ${res.status}`);
+  const text = await res.text();
+  if(!text || text.trim().startsWith("<!DOCTYPE")) throw new Error(`${sheet}: Google Sheets tidak mengembalikan CSV.`);
+  return parseCSV(text);
 }
 function parseCSV(text){
- const out=[];let row=[],cell="",q=false;
- for(let i=0;i<text.length;i++){const c=text[i],nn=text[i+1];
-  if(c==='"'){if(q&&nn==='"'){cell+='"';i++}else q=!q}
-  else if(c===','&&!q){row.push(cell);cell=""}
-  else if((c==='\n'||c==='\r')&&!q){if(c==='\r'&&nn==='\n')i++;row.push(cell);cell="";if(row.some(x=>x!==""))out.push(row);row=[]}
-  else cell+=c;
- }
- if(cell!==""||row.length){row.push(cell);if(row.some(x=>x!==""))out.push(row)}
- return out;
+  const rows=[]; let row=[], cell="", quoted=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i], n=text[i+1];
+    if(c === '"'){
+      if(quoted && n === '"'){cell+='"';i++;}
+      else quoted=!quoted;
+    } else if(c === "," && !quoted){row.push(cell);cell="";}
+    else if((c === "\\n" || c === "\\r") && !quoted){
+      if(c==="\\r" && n==="\\n") i++;
+      row.push(cell);cell="";
+      if(row.some(x=>String(x).trim()!=="")) rows.push(row);
+      row=[];
+    } else cell+=c;
+  }
+  row.push(cell);
+  if(row.some(x=>String(x).trim()!=="")) rows.push(row);
+  return rows;
 }
-async function getSheet(name){
- const urls=[
-  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent(name)}`,
-  `https://docs.google.com/spreadsheets/d/${SHEET_ID}/export?format=csv&sheet=${encodeURIComponent(name)}`
- ];
- let last;
- for(const u of urls){try{const r=await fetch(u,{cache:"no-store"});if(!r.ok)throw Error("HTTP "+r.status);const t=await r.text();if(!/<html|<!doctype/i.test(t))return parseCSV(t)}catch(e){last=e}}
- throw last||Error("Gagal membaca "+name);
+function parseSheet(sheet, rows){
+  const hi=findHeader(rows);
+  if(hi<0) throw new Error(`${sheet}: header "In Qlty" tidak ditemukan.`);
+  const headers=rows[hi];
+  const gridCol=findCol(headers,["grid","id grid","sub-grid","sub grid"]);
+  const qCol=findCol(headers,["in qlty","in qlty,"]);
+  const splCol=findCol(headers,["in-spl","in spl"]);
+  const ureaCol=findCol(headers,["urea, kg","urea kg"]);
+  const tspCol=findCol(headers,["tsp, kg","tsp kg"]);
+  const dolCol=findCol(headers,["dolomit, kg","dolomit kg"]);
+  const koheCol=findCol(headers,["kohe, kg","kohe kg"]);
+  const tankosM3Col=findCol(headers,["tankos, m3","tankos m3","tankos,m3"]);
+  if(gridCol<0 || qCol<0) throw new Error(`${sheet}: kolom Grid/In Qlty tidak ditemukan.`);
+  if(ureaCol<0 || tspCol<0 || dolCol<0 || koheCol<0 || tankosM3Col<0){
+    throw new Error(`${sheet}: salah satu kolom material tidak ditemukan (UREA/TSP/DOLOMIT/KOHE/TANKOS m³).`);
+  }
+  const out=[];
+  for(let i=hi+1;i<rows.length;i++){
+    const r=rows[i];
+    const grid=String(r[gridCol]??"").trim();
+    const q=String(r[qCol]??"").trim().toUpperCase();
+    if(!grid || !["TKA","TKB","TKC"].includes(q)) continue;
+    out.push({
+      lokasi:sheet, grid, q,
+      spl:splCol>=0?String(r[splCol]??"").trim():"",
+      urea:num(r[ureaCol]), tsp:num(r[tspCol]), dolomit:num(r[dolCol]),
+      kohe:num(r[koheCol]), tankos:num(r[tankosM3Col])
+    });
+  }
+  return out;
 }
-async function readLocation(name){
- const rows=await getSheet(name), hrow=findHeaderRow(rows);
- if(hrow<0)throw Error("Header master tidak ditemukan pada "+name);
- const headers=rows[hrow];
- const gridC=findCol(headers,["grid","id grid"]);
- const qltyC=findCol(headers,["in qlty"]);
- const splC=findCol(headers,["in-spl"]);
- const cols={};for(const m of MATERIALS)cols[m.key]=findCol(headers,m.aliases);
- const details=[], totals={urea:0,tsp:0,dolomit:0,kohe:0,bulking:0}, counts={TKA:0,TKB:0,TKC:0};
- for(let i=hrow+1;i<rows.length;i++){
-   const r=rows[i], grid=r[gridC];
-   // Hanya baris yang benar-benar memiliki ID/Grid. Baris kosong/total tidak dihitung.
-   if(grid===undefined || String(grid).trim()==="")continue;
-   const type=String(r[qltyC]??"").trim().toUpperCase();
-   if(type!=="TKA"&&type!=="TKB"&&type!=="TKC")continue;
-   counts[type]++;
-   const d={location:name,grid,type,inSpl:splC>=0?number(r[splC]):0};
-   for(const m of MATERIALS){d[m.key]=cols[m.key]>=0?number(r[cols[m.key]]):0;totals[m.key]+=d[m.key]}
-   details.push(d);
- }
- return {name,counts,totals,details,headers,cols};
+function setText(id, v){document.getElementById(id).textContent=v;}
+function render(){
+  const total=allRows.length;
+  const counts={TKA:0,TKB:0,TKC:0};
+  const sums={urea:0,tsp:0,dolomit:0,kohe:0,tankos:0};
+  const locs={};
+  allRows.forEach(r=>{
+    counts[r.q]++;
+    sums.urea+=r.urea; sums.tsp+=r.tsp; sums.dolomit+=r.dolomit; sums.kohe+=r.kohe; sums.tankos+=r.tankos;
+    if(!locs[r.lokasi]) locs[r.lokasi]={count:0,TKA:0,TKB:0,TKC:0,urea:0,tsp:0,dolomit:0,kohe:0,tankos:0};
+    const l=locs[r.lokasi]; l.count++; l[r.q]++; l.urea+=r.urea; l.tsp+=r.tsp; l.dolomit+=r.dolomit; l.kohe+=r.kohe; l.tankos+=r.tankos;
+  });
+  setText("totalGrid",total.toLocaleString("id-ID"));
+  setText("urea",fmt(sums.urea)+" kg"); setText("tsp",fmt(sums.tsp)+" kg");
+  setText("dolomit",fmt(sums.dolomit)+" kg"); setText("kohe",fmt(sums.kohe)+" kg"); setText("tankos",fmt(sums.tankos)+" m³");
+  ["TKA","TKB","TKC"].forEach(k=>{
+    const p=total?counts[k]/total*100:0;
+    setText(k.toLowerCase(),counts[k].toLocaleString("id-ID"));
+    setText("pct"+k,fmt(p,2)+"%");
+    document.getElementById("bar"+k).style.width=p+"%";
+  });
+  setText("mUrea",fmt(sums.urea)+" kg"); setText("mTsp",fmt(sums.tsp)+" kg");
+  setText("mDolomit",fmt(sums.dolomit)+" kg"); setText("mKohe",fmt(sums.kohe)+" kg"); setText("mTankos",fmt(sums.tankos)+" m³");
+  const kgTotal=sums.urea+sums.tsp+sums.dolomit+sums.kohe;
+  [["Urea",sums.urea],["Tsp",sums.tsp],["Dolomit",sums.dolomit],["Kohe",sums.kohe]].forEach(([n,v])=>{
+    setText("p"+n,fmt(kgTotal?v/kgTotal*100:0,2)+"% dari total 4 material (kg)");
+  });
+  const locBox=document.getElementById("locations");
+  locBox.innerHTML="";
+  Object.entries(locs).forEach(([name,l])=>{
+    locBox.innerHTML += `<div class="loc"><div class="title">${name}</div>
+      <div>Grid: <b>${l.count}</b> — TKA ${l.TKA}, TKB ${l.TKB}, TKC ${l.TKC}</div>
+      <div>UREA: ${fmt(l.urea)} kg</div><div>TSP: ${fmt(l.tsp)} kg</div>
+      <div>DOLOMIT: ${fmt(l.dolomit)} kg</div><div>KOHE: ${fmt(l.kohe)} kg</div>
+      <div>TANKOS: ${fmt(l.tankos)} m³</div></div>`;
+  });
+  const locSel=document.getElementById("locFilter");
+  const current=locSel.value;
+  locSel.innerHTML='<option value="">Semua Lokasi</option>'+Object.keys(locs).map(x=>`<option>${x}</option>`).join("");
+  if(Object.keys(locs).includes(current)) locSel.value=current;
+  renderTable();
 }
-async function loadDashboard(){
- const st=document.getElementById("status");st.textContent="Mengambil data…";
- try{
-  const rs=await Promise.all(LOCATION_SHEETS.map(readLocation));
-  const total={grids:0,TKA:0,TKB:0,TKC:0,urea:0,tsp:0,dolomit:0,kohe:0,bulking:0}, details=[];
-  rs.forEach(x=>{total.grids+=x.details.length;["TKA","TKB","TKC"].forEach(k=>total[k]+=x.counts[k]);MATERIALS.forEach(m=>total[m.key]+=x.totals[m.key]);details.push(...x.details)});
-  document.getElementById("totalGrid").textContent=fmt(total.grids);
-  for(const k of ["TKA","TKB","TKC"]){document.getElementById(k.toLowerCase()).textContent=fmt(total[k]);document.getElementById(k.toLowerCase()+"Pct").textContent=fmt(percent(total[k],total.grids))+"% dari total grid"}
-
-  const sum=MATERIALS.reduce((a,m)=>a+total[m.key],0), max=Math.max(...MATERIALS.map(m=>total[m.key]),1);
-  document.getElementById("materials").innerHTML=MATERIALS.map(m=>`<div class="mat"><h3>${m.label}</h3><div class="weight">${fmt(total[m.key])} ${m.key==="bulking"?"":"kg"}</div><div class="pct">${fmt(percent(total[m.key],sum))}% dari total material</div><div class="bar"><i style="width:${percent(total[m.key],max)}%"></i></div></div>`).join("");
-  document.getElementById("materialBars").innerHTML=MATERIALS.map(m=>`<div style="margin:13px 0"><div style="display:flex;justify-content:space-between;font-size:13px"><b>${m.label}</b><span>${fmt(total[m.key])} ${m.key==="bulking"?"":"kg"}</span></div><div class="bar"><i style="width:${percent(total[m.key],max)}%"></i></div></div>`).join("");
-  document.getElementById("locations").innerHTML=rs.map(x=>`<div class="loc"><b>${esc(x.name)}</b><div class="n">${x.details.length}</div><div class="small">TKA ${x.counts.TKA} · TKB ${x.counts.TKB} · TKC ${x.counts.TKC}</div></div>`).join("");
-  document.querySelector("#detail thead").innerHTML="<tr><th>Lokasi</th><th>Grid</th><th>In Qlty</th><th>In-SPL</th><th>UREA (kg)</th><th>TSP (kg)</th><th>DOLOMIT (kg)</th><th>KOHE (kg)</th><th>BULKING AGENT</th></tr>";
-  document.querySelector("#detail tbody").innerHTML=details.map(d=>`<tr><td>${esc(d.location)}</td><td>${esc(d.grid)}</td><td>${d.type}</td><td>${fmt(d.inSpl)}</td><td>${fmt(d.urea)}</td><td>${fmt(d.tsp)}</td><td>${fmt(d.dolomit)}</td><td>${fmt(d.kohe)}</td><td>${fmt(d.bulking)}</td></tr>`).join("");
-  st.innerHTML='<span class="ok">✓ Data diperbarui '+new Date().toLocaleString("id-ID")+'</span>';
- }catch(e){console.error(e);st.innerHTML='<span class="error">Gagal membaca data</span>';document.querySelector(".note").innerHTML="<b>Kesalahan:</b> "+esc(e.message)+"<br>Pastikan Google Sheet sudah dipublikasikan ke web dan nama tab lokasi tidak berubah."}
+function renderTable(){
+  const lf=document.getElementById("locFilter").value;
+  const qf=document.getElementById("qualityFilter").value;
+  const sf=document.getElementById("gridSearch").value.toLowerCase().trim();
+  const rows=allRows.filter(r=>(!lf||r.lokasi===lf)&&(!qf||r.q===qf)&&(!sf||r.grid.toLowerCase().includes(sf)));
+  document.getElementById("tbody").innerHTML=rows.map(r=>`<tr>
+    <td>${r.lokasi}</td><td>${r.grid}</td><td>${r.q}</td><td>${r.spl}</td>
+    <td class="num">${fmt(r.urea)}</td><td class="num">${fmt(r.tsp)}</td><td class="num">${fmt(r.dolomit)}</td>
+    <td class="num">${fmt(r.kohe)}</td><td class="num">${fmt(r.tankos)}</td>
+  </tr>`).join("");
 }
-loadDashboard();setInterval(loadDashboard,REFRESH_MS);
+async function load(){
+  const status=document.getElementById("status");
+  status.className="status";
+  status.textContent="Mengambil data dari Google Sheets...";
+  const results=await Promise.allSettled(SHEETS.map(async s=>({sheet:s,rows:parseSheet(s,await fetchSheet(s))})));
+  const good=[], bad=[];
+  results.forEach(x=>x.status==="fulfilled"?good.push(x.value):bad.push(x.reason?.message||"Gagal mengambil data"));
+  allRows=good.flatMap(x=>x.rows);
+  render();
+  setText("updated",new Date().toLocaleString("id-ID"));
+  if(bad.length===0){
+    status.className="status ok";
+    status.textContent=`Terhubung. ${good.length} lokasi berhasil dibaca • ${allRows.length.toLocaleString("id-ID")} grid • refresh 60 detik.`;
+  }else{
+    status.className="status err";
+    status.innerHTML=`Sebagian data gagal dibaca. Berhasil: ${good.map(x=>x.sheet).join(", ")||"tidak ada"}. <br>${bad.map(x=>htmlEscape(x)).join("<br>")}`;
+  }
+}
+function htmlEscape(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]));}
+document.getElementById("locFilter").addEventListener("change",renderTable);
+document.getElementById("qualityFilter").addEventListener("change",renderTable);
+document.getElementById("gridSearch").addEventListener("input",renderTable);
+load();
+setInterval(load,REFRESH_MS);
 </script>
 </body>
 </html>
